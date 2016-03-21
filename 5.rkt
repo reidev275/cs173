@@ -16,7 +16,6 @@
 (define const5 (fdC 'const5 '_ (numC 5)))
 
 
-
 (define (subst [what : ExprC] [for : symbol] [in : ExprC]) : ExprC
   (type-case ExprC in
     [numC (n) in]
@@ -52,4 +51,8 @@
                           fds))]
     [plusC (l r) (+ (interp l fds) (interp r fds))]
     [multC (l r) (* (interp l fds) (interp r fds))]))
+
+
+(define functions (list double add5 quadruple const5))
+(test (interp (appC 'quadruple (numC 5)) functions) 20)
     
