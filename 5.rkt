@@ -15,7 +15,6 @@
 (define quadruple (fdC 'quadruple 'x (appC 'double (appC 'double (idC 'x)))))
 (define const5 (fdC 'const5 '_ (numC 5)))
 
-
 (define (subst [what : ExprC] [for : symbol] [in : ExprC]) : ExprC
   (type-case ExprC in
     [numC (n) in]
@@ -29,7 +28,6 @@
                         (subst what for r))]))
 
 
-
 ;;provided by the book
 (define (get-fundef [n : symbol] [fds : (listof FunDefC)]) : FunDefC
   (cond
@@ -37,8 +35,6 @@
     [(cons? fds) (cond
                    [(equal? n (fdC-name (first fds))) (first fds)]
                    [else (get-fundef n (rest fds))])]))
-
-
 
 (define (interp [e : ExprC] [fds : (listof FunDefC)]) : number
   (type-case ExprC e
@@ -52,7 +48,7 @@
     [plusC (l r) (+ (interp l fds) (interp r fds))]
     [multC (l r) (* (interp l fds) (interp r fds))]))
 
-
 (define functions (list double add5 quadruple const5))
 (test (interp (appC 'quadruple (numC 5)) functions) 20)
+(test (interp (appC 'const5 (numC 2)) functions) 5)
     
