@@ -9,6 +9,7 @@
   [numS (n : number)]
   [plusS (l : ArithS) (r : ArithS)]
   [bminusS (l : ArithS) (r : ArithS)]
+  [uminusS (e : ArithS)]
   [multS (l : ArithS) (r : ArithS)])
 
 (define (desugar [a : ArithS]) : ArithC
@@ -16,7 +17,10 @@
     [numS (n) (numC n)]
     [plusS (l r) (plusC (desugar l) (desugar r))]
     [multS (l r) (multC (desugar l) (desugar r))]
+    [uminusS (e) (multC (numC -1) (desugar e))]
     [bminusS (l r) (plusC (desugar l) (multC (numC -1) (desugar r)))]))
+
+(define negFive (uminusS (numS 5)))
 
 (define (parse [s : s-expression]) : ArithS
   (cond
@@ -43,6 +47,7 @@
     [multC (l r) (* (interp l) (interp r))]))
 (test (interp (desugar seven)) 7)
 (test (interp (desugar three)) 3)
+(test (interp (desugar negFive)) -5)
 
 
 
